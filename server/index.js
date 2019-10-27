@@ -1,4 +1,4 @@
-var http = require('http');
+const http = require('http');
 const express = require('express');
 const bodyParser = require('body-parser');
 // const cors = require('cors'); // in case if cors problems appear, install cors as dependency and uncomment
@@ -19,6 +19,9 @@ const portArduino = new SerialPort('COM3', {
 // Middleware
 app.use(bodyParser.json());
 // app.use(cors()); // same as above, related to cors problems
-
+io.on('connect', function (socket) {
+   console.log('socket.io connection');
+   socket.on('sendData', data => console.log(data)); // dummy method for testing socket connection with Vue
+});
 
 server.listen(port, () => console.log(`Listening on port ${port}...`));
