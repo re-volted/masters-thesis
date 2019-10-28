@@ -1,7 +1,7 @@
 <template>
-  <div>
-    <input type="text" v-model="someData" />
-    <button @click="clickButton(someData)">Click</button>
+  <div class="panel">
+    <h2>Light Meter Panel</h2>
+    <span v-text="`${lightLevel} lux`"></span>
   </div>
 </template>
 
@@ -10,14 +10,13 @@ export default {
   name: "LightMeterPanel",
   data() {
     return {
-      someData: ""
+      lightLevel: 0
     };
   },
-  methods: {
-    clickButton(data) {
-      // dummy method for testing socket connection
-      this.$socket.emit("sendData", data);
-      this.someData = "";
+  sockets: {
+    light(data) {
+      this.lightLevel = +data;
+      console.log("Data from Arduino Uno:", data);
     }
   }
 };
