@@ -3,9 +3,11 @@ import App from "./App.vue";
 import router from "./router";
 import store from "./store";
 import VueSocketIO from "vue-socket.io";
-import './assets/scss/main.scss'
 
 Vue.config.productionTip = false;
+
+// Loading styles
+require('./assets/scss/main.scss')
 
 Vue.use(new VueSocketIO({
   debug: true,
