@@ -1,21 +1,19 @@
-const http = require('http');
-const express = require('express');
+const http = require("http");
+const express = require("express");
 // const bodyParser = require('body-parser');
-const cors = require('cors');
+const cors = require("cors");
 
 const app = express();
 const server = http.createServer(app);
 
 const port = process.env.PORT || 5000;
 
-const io = require('socket.io')(server);
-const SerialPort = require('serialport');
-const Readline = require('@serialport/parser-readline');
-const portArduino = new SerialPort(
-   'COM3', {
-      baudRate: 9600
-   }
-);
+const io = require("socket.io")(server);
+const SerialPort = require("serialport");
+const Readline = require("@serialport/parser-readline");
+const portArduino = new SerialPort("COM3", {
+    baudRate: 9600
+});
 
 // Initializing of Arduino serialport data parser
 const parser = new Readline();
@@ -25,17 +23,17 @@ portArduino.pipe(parser);
 // app.use(bodyParser.json());
 app.use(cors());
 
-parser.on('open', () => console.log('serial port opened'));
+parser.on("open", () => console.log("serial port opened"));
 
-io.once('connect', socket => {
-   console.log('socket.io connection');
+io.once("connect", socket => {
+    console.log("socket.io connection");
 
-   parser.on('data', data => {
-      console.log('Data from Arduino:', data);
-      socket.emit("light", data);
-   });
+    parser.on("data", data => {
+        console.log("Data from Arduino:", data);
+        socket.emit("light", data);
+    });
 
-   socket.on('disconnect', () => console.log('disconnected'));
+    socket.on("disconnect", () => console.log("disconnected"));
 });
 
 server.listen(port, () => console.log(`Listening on port ${port}...`));

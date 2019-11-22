@@ -7,20 +7,23 @@ import VueSocketIO from "vue-socket.io";
 Vue.config.productionTip = false;
 
 // Loading styles
-require('./assets/scss/main.scss')
+require("./assets/scss/main.scss");
 
-Vue.use(new VueSocketIO({
-  debug: true,
-  connection: `http://localhost:${process.env.VUE_APP_SOCKET_PORT || 3000}`,
-  vuex: {
-    store,
-    actionPrefix: 'SOCKET_',
-    mutationPrefix: 'SOCKET_'
-  }
-}))
+Vue.use(
+    new VueSocketIO({
+        debug: true,
+        connection: `http://localhost:${process.env.VUE_APP_SOCKET_PORT ||
+            3000}`,
+        vuex: {
+            store,
+            actionPrefix: "SOCKET_",
+            mutationPrefix: "SOCKET_"
+        }
+    })
+);
 
 new Vue({
-  router,
-  store,
-  render: h => h(App)
+    router,
+    store,
+    render: h => h(App)
 }).$mount("#app");

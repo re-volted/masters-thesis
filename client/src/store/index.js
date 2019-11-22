@@ -4,8 +4,15 @@ import Vuex from "vuex";
 Vue.use(Vuex);
 
 export default new Vuex.Store({
-  state: {},
-  mutations: {},
-  actions: {},
-  modules: {}
+    state: {
+        lightLevel: 0
+    },
+    mutations: {
+        updateLightLevel(state, data) {
+            const dataParsed = JSON.parse(data);
+            state.lightLevel = dataParsed.light;
+        }
+    },
+    actions: {},
+    modules: {}
 });
