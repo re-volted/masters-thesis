@@ -6,12 +6,26 @@
     height: 100vh;
     background-size: cover;
     background-position: center;
-
-    &__base {
-        background-image: url("../renders/s1/poz2/blank.jpg");
-    }
+    transition: background 3s ease;
 
     &__layer {
         mix-blend-mode: lighten;
+
+        &:nth-child(1) {
+            opacity: 0.5;
+        }
+        &:nth-child(2) {
+            opacity: 0.7;
+        }
+        &:nth-child(5) {
+            opacity: 0.5;
+        }
+        &:nth-child(6) {
+            opacity: 0.7;
+        }
+
+        &--day {
+            opacity: 0.5;
+        }
     }
 }

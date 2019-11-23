@@ -1,0 +1,30 @@
+.controller {
+    position: absolute;
+    top: 0;
+    right: 0;
+    z-index: 1000;
+    display: flex;
+    flex-direction: column;
+
+    &__header {
+        display: flex;
+        background-color: #ccc;
+        border-bottom: 1px solid #000;
+    }
+
+    &__content {
+        display: flex;
+        justify-content: space-between;
+    }
+
+    &__item {
+        display: flex;
+        flex-direction: column;
+        padding: 1rem;
+        background-color: #ddd;
+
+        &:not(:last-child) {
+            border-right: 1px solid black;
+        }
+    }
+}

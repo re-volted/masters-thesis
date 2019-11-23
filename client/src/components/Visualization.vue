@@ -1,16 +1,29 @@
 <template>
     <div
-        class="visualization visualization__base"
+        class="visualization"
         :style="{
-            backgroundImage: `url(${blankPath})`
+            backgroundImage:
+                'url(' +
+                require(`@/assets/renders/s0/poz${pos}/blank.jpg`) +
+                ')'
         }"
     >
         <div
-            class="visualization visualization__layer"
-            v-for="light in lights"
-            :key="light.index"
+            class="visualization visualization__layer visualization__layer--day"
             :style="{
-                backgroundImage: `url(${buildPath(light)})`
+                backgroundImage:
+                    'url(' +
+                    require(`@/assets/renders/s${sun}/poz${pos}/blank.jpg`) +
+                    ')'
+            }"
+        />
+        <div
+            class="visualization visualization__layer"
+            v-for="(light, index) in lights"
+            :key="index"
+            :style="{
+                backgroundImage: `url(${buildPath(light)})`,
+                opacity: light.value
             }"
         />
     </div>
@@ -18,30 +31,26 @@
 
 <script>
 export default {
-    data() {
-        return {
-            sun: 0,
-            position: 2,
-            type: "D",
-            indexes: [1, 2, 3, 4, 5, 6, 7, 8]
-        };
-    },
-    methods: {
-        blankPath() {
-            return require(`../assets/renders/s${this.sun}/poz${this.position}/blank.png`);
-        },
-        buildPath(light) {
-            return require(`../assets/renders/s${this.sun}/poz${this.position}/${light.index}${light.type}.jpg`);
-        }
-    },
     computed: {
         lights() {
-            return this.indexes.map(i => {
-                return {
-                    index: i,
-                    type: this.type
-                };
-            });
+            return this.$store.state.lights;
+        },
+        lightsTypes() {
+            return this.$store.state.lightsConfig.types;
+        },
+        sun() {
+            return this.$store.state.sun;
+        },
+        pos() {
+            return this.$store.state.pos;
+        },
+        blankPath() {
+            return `@/assets/renders/s${this.sun}/poz${this.pos}/blank.png`;
+        }
+    },
+    methods: {
+        buildPath(light) {
+            return require(`@/assets/renders/s${this.sun}/poz${this.pos}/${light.index}${light.type}.jpg`);
         }
     }
 };
