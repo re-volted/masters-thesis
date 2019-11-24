@@ -1,5 +1,6 @@
 import Vue from "vue";
 import Vuex from "vuex";
+import interfaceModule from "./interface";
 
 Vue.use(Vuex);
 
@@ -40,6 +41,24 @@ export default new Vuex.Store({
             state.sun = sun;
         }
     },
-    actions: {},
-    modules: {}
+    actions: {
+        updateLightLevel(context, data) {
+            context.commit("updateLightLevel", data);
+        },
+        addLightToList(context, light) {
+            context.commit("addLightToList", light);
+        },
+        addLightToStructure(context, light) {
+            context.commit("addLightToStructure", light);
+        },
+        switchPos(context, pos) {
+            context.commit("showLoading", 1000);
+            context.commit("switchPos", pos);
+        },
+        switchSun(context, sun) {
+            context.commit("showLoading", 500);
+            context.commit("switchSun", sun);
+        }
+    },
+    modules: { interfaceModule }
 });

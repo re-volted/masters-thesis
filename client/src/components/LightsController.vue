@@ -125,10 +125,10 @@ export default {
             this.tabs[tabName] = true;
         },
         switchPos(pos) {
-            this.$store.commit("switchPos", pos);
+            this.$store.dispatch("switchPos", pos);
         },
         switchSun(sun) {
-            this.$store.commit("switchSun", sun);
+            this.$store.dispatch("switchSun", sun);
         },
         resolveSrcPath(tab) {
             return require(`@/assets/img/svg/${tab}.svg`);

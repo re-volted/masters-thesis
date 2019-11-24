@@ -26,11 +26,17 @@
                 opacity: light.value
             }"
         />
+        <Loading />
     </div>
 </template>
 
 <script>
+import Loading from "@/components/Loading";
+
 export default {
+    components: {
+        Loading
+    },
     computed: {
         lights() {
             return this.$store.state.lightsList;

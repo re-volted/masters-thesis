@@ -15,8 +15,8 @@ export function initFillLights() {
             light.value = +Math.random().toFixed(2);
             light.state = false;
 
-            store.commit("addLightToList", light);
-            store.commit("addLightToStructure", light);
+            store.dispatch("addLightToList", light);
+            store.dispatch("addLightToStructure", light);
         }
     }
 }

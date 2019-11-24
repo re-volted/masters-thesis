@@ -17,7 +17,7 @@ export default {
     },
     sockets: {
         light(data) {
-            this.$store.commit("updateLightLevel", data);
+            this.$store.dispatch("updateLightLevel", data);
         }
     }
 };
