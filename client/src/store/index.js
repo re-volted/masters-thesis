@@ -17,8 +17,7 @@ export default new Vuex.Store({
         },
         sun: 0,
         pos: 2,
-        lightsList: [],
-        lights: {}
+        lights: []
     },
     mutations: {
         updateLightLevel(state, data) {
@@ -26,13 +25,7 @@ export default new Vuex.Store({
             state.lightLevel = dataParsed.light;
         },
         addLightToList(state, light) {
-            state.lightsList.push(light);
-        },
-        addLightToStructure(state, light) {
-            if (state.lights[light.index] === undefined) {
-                state.lights[light.index] = {};
-            }
-            state.lights[light.index][light.type] = light;
+            state.lights.push(light);
         },
         switchPos(state, pos) {
             state.pos = pos;
@@ -48,11 +41,8 @@ export default new Vuex.Store({
         addLightToList(context, light) {
             context.commit("addLightToList", light);
         },
-        addLightToStructure(context, light) {
-            context.commit("addLightToStructure", light);
-        },
         switchPos(context, pos) {
-            context.commit("showLoading", 1000);
+            context.commit("showLoading", 500);
             context.commit("switchPos", pos);
         },
         switchSun(context, sun) {

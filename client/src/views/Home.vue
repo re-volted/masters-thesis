@@ -11,6 +11,9 @@ import Visualization from "@/components/Visualization.vue";
 
 export default {
     name: "home",
+    mounted() {
+        this.$store.dispatch("showLoading", 1000);
+    },
     components: {
         LightsController,
         Visualization

@@ -75,17 +75,9 @@
                     :key="index"
                     class="controller__field controller__field--light"
                 >
-                    <p>{{ light["D"].index }}</p>
-                    <div class="flex-col">
-                        <div class="flex-row">
-                            <p>{{ light["D"].type }}</p>
-                            <p>{{ light["D"].value }}</p>
-                        </div>
-                        <div class="flex-row">
-                            <p>{{ light["G"].type }}</p>
-                            <p>{{ light["G"].value }}</p>
-                        </div>
-                    </div>
+                    <p>{{ light.type === "D" ? light.index : "" }}</p>
+                    <p>{{ light.type }}</p>
+                    <p>{{ light.value }} lx</p>
                 </div>
             </div>
         </transition>

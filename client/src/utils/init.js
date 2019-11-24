@@ -3,12 +3,12 @@ import store from "../store";
 export function initFillLights() {
     const lightsConfig = store.state.lightsConfig;
 
-    for (
-        let typeIndex = 0;
-        typeIndex < lightsConfig.types.length;
-        typeIndex++
-    ) {
-        for (let num = 1; num <= lightsConfig.num; num++) {
+    for (let num = 1; num <= lightsConfig.num; num++) {
+        for (
+            let typeIndex = 0;
+            typeIndex < lightsConfig.types.length;
+            typeIndex++
+        ) {
             const light = {};
             light.index = num;
             light.type = lightsConfig.types[typeIndex];
@@ -16,7 +16,7 @@ export function initFillLights() {
             light.state = false;
 
             store.dispatch("addLightToList", light);
-            store.dispatch("addLightToStructure", light);
+            // store.dispatch("addLightToStructure", light);
         }
     }
 }

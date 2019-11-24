@@ -59,17 +59,27 @@
         padding: 0.5rem 1rem;
         background-color: #ddd;
         text-align: center;
-
-        &:not(:last-child) {
-            border-bottom: 1px solid #2a2a2a;
-        }
+        border-bottom: 1px solid #2a2a2a;
 
         &--light {
             flex-direction: row;
             align-items: center;
+            justify-content: space-between;
+
+            &:nth-child(2n + 1) {
+                border-bottom: 1px solid #c5c5c5;
+            }
 
             & p {
-                width: 50px;
+                width: 100%;
+
+                &:not(:last-child) {
+                    border-right: 1px solid #c5c5c5;
+                }
+
+                &:last-child {
+                    width: 200%;
+                }
             }
         }
     }

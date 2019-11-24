@@ -39,10 +39,7 @@ export default {
     },
     computed: {
         lights() {
-            return this.$store.state.lightsList;
-        },
-        lightsTypes() {
-            return this.$store.state.lightsConfig.types;
+            return this.$store.state.lights;
         },
         sun() {
             return this.$store.state.sun;
