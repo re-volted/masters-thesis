@@ -33,7 +33,7 @@
 export default {
     computed: {
         lights() {
-            return this.$store.state.lights;
+            return this.$store.state.lightsList;
         },
         lightsTypes() {
             return this.$store.state.lightsConfig.types;
