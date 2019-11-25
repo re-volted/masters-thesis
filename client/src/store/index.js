@@ -7,20 +7,16 @@ Vue.use(Vuex);
 
 export default new Vuex.Store({
     state: {
-        envConfig: {
-            pos: [1, 2],
-            sun: [0, 1]
+        config: {
+            cameraPositions: [1, 2],
+            lightsNum: 8,
+            lightsTypes: ["D", "G"]
         },
+        lights: [],
         lightLevel: 0,
-        lightsConfig: {
-            num: 8,
-            types: ["D", "G"]
-        },
-        sunValue: 1,
-        sun: 0,
-        pos: 2,
-        direction: ["D"],
-        lights: []
+        sunLevel: 1,
+        pos: 1,
+        direction: ["D"]
     },
     mutations: {
         updateLightLevel(state, data) {
@@ -32,9 +28,6 @@ export default new Vuex.Store({
         },
         switchPos(state, pos) {
             state.pos = pos;
-        },
-        switchSun(state, sun) {
-            state.sun = sun;
         },
         toggleDir(state, dir) {
             const dirIndex = state.direction.indexOf(dir);
@@ -60,10 +53,6 @@ export default new Vuex.Store({
         switchPos(context, pos) {
             context.commit("showLoading", 500);
             context.commit("switchPos", pos);
-        },
-        switchSun(context, sun) {
-            context.commit("showLoading", 500);
-            context.commit("switchSun", sun);
         },
         toggleDir(context, dir) {
             context.commit("toggleDir", dir);

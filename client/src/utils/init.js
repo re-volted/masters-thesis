@@ -1,17 +1,17 @@
 import store from "../store";
 
 export function initFillLights() {
-    const lightsConfig = store.state.lightsConfig;
+    const config = store.state.config;
 
-    for (let num = 1; num <= lightsConfig.num; num++) {
+    for (let num = 1; num <= config.lightsNum; num++) {
         for (
             let typeIndex = 0;
-            typeIndex < lightsConfig.types.length;
+            typeIndex < config.lightsTypes.length;
             typeIndex++
         ) {
             const light = {};
             light.index = num;
-            light.type = lightsConfig.types[typeIndex];
+            light.type = config.lightsTypes[typeIndex];
             light.value = 0;
             light.state = false;
             light.row = num % 4 ? num % 4 : 4;

@@ -43,12 +43,9 @@ export default {
             return this.$store.state.lights;
         },
         sunValue() {
-            return this.$store.state.lightLevel > 1000
+            return this.$store.state.lightLevel > 700
                 ? 1
-                : this.$store.state.lightLevel / 1000;
-        },
-        sun() {
-            return this.$store.state.sun;
+                : this.$store.state.lightLevel / 700;
         },
         pos() {
             return this.$store.state.pos;

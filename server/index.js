@@ -23,17 +23,21 @@ portArduino.pipe(parser);
 // app.use(bodyParser.json());
 app.use(cors());
 
-parser.on("open", () => console.log("serial port opened"));
+parser.on("open", () =>
+    console.log("Serial port for communication with Arduino opened.")
+);
 
-io.once("connect", socket => {
-    console.log("socket.io connection");
+io.on("connect", socket => {
+    console.log("Socket connection with Vue application established.");
 
     parser.on("data", data => {
         console.log("Data from Arduino:", data);
         socket.emit("light", data);
     });
 
-    socket.on("disconnect", () => console.log("disconnected"));
+    socket.on("disconnect", () => {
+        console.log("Socket disconnected from Vue application.");
+    });
 });
 
 server.listen(port, () => console.log(`Listening on port ${port}...`));

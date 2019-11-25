@@ -29,7 +29,7 @@
                     </p>
                     <div class="choices">
                         <span
-                            v-for="choice in envConfig.pos"
+                            v-for="choice in config.cameraPositions"
                             :key="choice"
                             class="choice"
                             :class="{ 'choice--active': choice === pos }"
@@ -38,28 +38,13 @@
                         >
                     </div>
                 </div>
-                <!-- <div class="controller__field">
-                    <p class="title">
-                        Pozycja słońca:
-                    </p>
-                    <div class="choices">
-                        <span
-                            v-for="choice in envConfig.sun"
-                            :key="choice"
-                            class="choice"
-                            :class="{ 'choice--active': choice === sun }"
-                            @click="switchSun(choice)"
-                            >{{ choice }}</span
-                        >
-                    </div>
-                </div> -->
                 <div class="controller__field">
                     <p class="title">
                         Kierunek świecenia:
                     </p>
                     <div class="choices">
                         <span
-                            v-for="choice in lightsConfig.types"
+                            v-for="choice in config.lightsTypes"
                             :key="choice"
                             class="choice"
                             :class="{
@@ -105,7 +90,7 @@
                 >
                     <p>{{ light.type === "D" ? light.index : "" }}</p>
                     <p>{{ light.type }}</p>
-                    <p>{{ light.value * 250 }} lx</p>
+                    <p>{{ light.value * 100 }}%</p>
                 </div>
             </div>
         </transition>
@@ -123,17 +108,11 @@ export default {
         };
     },
     computed: {
-        envConfig() {
-            return this.$store.state.envConfig;
-        },
-        lightsConfig() {
-            return this.$store.state.lightsConfig;
+        config() {
+            return this.$store.state.config;
         },
         pos() {
             return this.$store.state.pos;
-        },
-        sun() {
-            return this.$store.state.sun;
         },
         direction() {
             return this.$store.state.direction;
@@ -153,9 +132,6 @@ export default {
         switchPos(pos) {
             this.$store.dispatch("switchPos", pos);
         },
-        switchSun(sun) {
-            this.$store.dispatch("switchSun", sun);
-        },
         toggleDir(dir) {
             this.$store.dispatch("toggleDir", dir);
         },
@@ -163,6 +139,7 @@ export default {
             return require(`@/assets/img/svg/${tab}.svg`);
         },
         updateVisualization() {
+            this.$store.dispatch("showLoading", 500);
             this.$store.dispatch("updateVisualization");
         }
     }
@@ -218,12 +195,13 @@ export default {
     color: #888;
     align-self: center;
     margin-top: auto;
-    padding: 0.5rem 0;
+    padding: 0.5rem;
+    font-style: italic;
 
     & p {
-        font-style: italic;
         color: #aaa;
         font-size: 0.75rem;
+        text-align: right;
     }
 }
 </style>
