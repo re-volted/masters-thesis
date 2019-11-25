@@ -12,11 +12,11 @@ export function initFillLights() {
             const light = {};
             light.index = num;
             light.type = lightsConfig.types[typeIndex];
-            light.value = +Math.random().toFixed(2);
+            light.value = 0;
             light.state = false;
+            light.row = num % 4 ? num % 4 : 4;
 
             store.dispatch("addLightToList", light);
-            // store.dispatch("addLightToStructure", light);
         }
     }
 }

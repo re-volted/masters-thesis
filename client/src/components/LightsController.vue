@@ -38,7 +38,7 @@
                         >
                     </div>
                 </div>
-                <div class="controller__field">
+                <!-- <div class="controller__field">
                     <p class="title">
                         Pozycja słońca:
                     </p>
@@ -52,6 +52,30 @@
                             >{{ choice }}</span
                         >
                     </div>
+                </div> -->
+                <div class="controller__field">
+                    <p class="title">
+                        Kierunek świecenia:
+                    </p>
+                    <div class="choices">
+                        <span
+                            v-for="choice in lightsConfig.types"
+                            :key="choice"
+                            class="choice"
+                            :class="{
+                                'choice--active':
+                                    direction.indexOf(choice) !== -1
+                            }"
+                            @click="toggleDir(choice)"
+                            >{{ choice }}</span
+                        >
+                    </div>
+                </div>
+                <div
+                    class="controller__field btn btn--primary"
+                    @click="updateVisualization"
+                >
+                    Odśwież wizualizację
                 </div>
                 <div class="author">
                     <p>Autor:</p>
@@ -81,7 +105,7 @@
                 >
                     <p>{{ light.type === "D" ? light.index : "" }}</p>
                     <p>{{ light.type }}</p>
-                    <p>{{ light.value }} lx</p>
+                    <p>{{ light.value * 250 }} lx</p>
                 </div>
             </div>
         </transition>
@@ -102,11 +126,17 @@ export default {
         envConfig() {
             return this.$store.state.envConfig;
         },
+        lightsConfig() {
+            return this.$store.state.lightsConfig;
+        },
         pos() {
             return this.$store.state.pos;
         },
         sun() {
             return this.$store.state.sun;
+        },
+        direction() {
+            return this.$store.state.direction;
         },
         lights() {
             return this.$store.state.lights;
@@ -126,8 +156,14 @@ export default {
         switchSun(sun) {
             this.$store.dispatch("switchSun", sun);
         },
+        toggleDir(dir) {
+            this.$store.dispatch("toggleDir", dir);
+        },
         resolveSrcPath(tab) {
             return require(`@/assets/img/svg/${tab}.svg`);
+        },
+        updateVisualization() {
+            this.$store.dispatch("updateVisualization");
         }
     }
 };
@@ -186,7 +222,8 @@ export default {
 
     & p {
         font-style: italic;
-        color: #666;
+        color: #aaa;
+        font-size: 0.75rem;
     }
 }
 </style>

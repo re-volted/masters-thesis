@@ -11,6 +11,7 @@ export default {
     mounted() {
         document.title = "Master's Thesis";
         initFillLights();
+        this.$store.dispatch("updateVisualization");
     },
     sockets: {
         connect() {

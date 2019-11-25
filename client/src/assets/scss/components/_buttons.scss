@@ -1,0 +1,7 @@
+.btn {
+    cursor: pointer;
+
+    &--primary {
+        background-color: $color-primary !important;
+    }
+}

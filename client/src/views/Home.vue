@@ -53,6 +53,7 @@ export default {
     sockets: {
         light(data) {
             this.$store.dispatch("updateLightLevel", data);
+            this.$store.dispatch("updateVisualization");
         }
     }
 };

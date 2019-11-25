@@ -1,6 +1,7 @@
 import Vue from "vue";
 import Vuex from "vuex";
 import interfaceModule from "./interface";
+import { updateLightsValues } from "../utils/lights";
 
 Vue.use(Vuex);
 
@@ -15,8 +16,10 @@ export default new Vuex.Store({
             num: 8,
             types: ["D", "G"]
         },
+        sunValue: 1,
         sun: 0,
         pos: 2,
+        direction: ["D"],
         lights: []
     },
     mutations: {
@@ -32,6 +35,19 @@ export default new Vuex.Store({
         },
         switchSun(state, sun) {
             state.sun = sun;
+        },
+        toggleDir(state, dir) {
+            const dirIndex = state.direction.indexOf(dir);
+
+            dirIndex === -1
+                ? state.direction.push(dir)
+                : state.direction.splice(dirIndex, 1);
+        },
+        updateVisualization(state) {
+            const lightsValues = updateLightsValues(state.lightLevel);
+            for (let i = 0; i < lightsValues.length; i++) {
+                state.lights[i].value = lightsValues[i];
+            }
         }
     },
     actions: {
@@ -48,6 +64,13 @@ export default new Vuex.Store({
         switchSun(context, sun) {
             context.commit("showLoading", 500);
             context.commit("switchSun", sun);
+        },
+        toggleDir(context, dir) {
+            context.commit("toggleDir", dir);
+            context.commit("updateVisualization");
+        },
+        updateVisualization(context) {
+            context.commit("updateVisualization");
         }
     },
     modules: { interfaceModule }

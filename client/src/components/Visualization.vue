@@ -13,8 +13,9 @@
             :style="{
                 backgroundImage:
                     'url(' +
-                    require(`@/assets/renders/s${sun}/poz${pos}/blank.jpg`) +
-                    ')'
+                    require(`@/assets/renders/s1/poz${pos}/blank.jpg`) +
+                    ')',
+                opacity: sunValue
             }"
         />
         <div
@@ -41,19 +42,21 @@ export default {
         lights() {
             return this.$store.state.lights;
         },
+        sunValue() {
+            return this.$store.state.lightLevel > 1000
+                ? 1
+                : this.$store.state.lightLevel / 1000;
+        },
         sun() {
             return this.$store.state.sun;
         },
         pos() {
             return this.$store.state.pos;
-        },
-        blankPath() {
-            return `@/assets/renders/s${this.sun}/poz${this.pos}/blank.png`;
         }
     },
     methods: {
         buildPath(light) {
-            return require(`@/assets/renders/s${this.sun}/poz${this.pos}/${light.index}${light.type}.jpg`);
+            return require(`@/assets/renders/s0/poz${this.pos}/${light.index}${light.type}.jpg`);
         }
     }
 };
