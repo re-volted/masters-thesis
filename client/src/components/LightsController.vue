@@ -1,6 +1,6 @@
 <template>
     <div class="controller">
-        <div class="controller__row" style="justify-content: flex-end;">
+        <div class="controller__menu" style="justify-content: flex-end;">
             <div
                 v-for="(value, tab, index) in tabs"
                 :key="index"
@@ -52,6 +52,10 @@
                             >{{ choice }}</span
                         >
                     </div>
+                </div>
+                <div class="author">
+                    <p>Autor:</p>
+                    Bartosz Kowalczyk
                 </div>
             </div>
             <div
@@ -171,6 +175,18 @@ export default {
 
     &:not(:last-child) {
         margin-right: 0.5rem;
+    }
+}
+
+.author {
+    color: #888;
+    align-self: center;
+    margin-top: auto;
+    padding: 0.5rem 0;
+
+    & p {
+        font-style: italic;
+        color: #666;
     }
 }
 </style>

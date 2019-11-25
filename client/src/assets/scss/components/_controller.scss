@@ -4,31 +4,18 @@
     z-index: 1000;
     display: flex;
     flex-direction: column;
-    background-color: #2a2a2a;
+    background-color: $color-grey-dark;
 
-    &__row {
+    &__menu {
         display: flex;
         flex-direction: row;
-        border-bottom: 1px solid #2a2a2a;
-    }
-
-    &__content {
-        display: flex;
-        justify-content: space-between;
-    }
-
-    &__tab {
-        width: 100%;
-
-        &:first-child {
-            border-top: 3px solid #d36b0b;
-        }
+        border-bottom: 1px solid $color-grey-dark;
     }
 
     &__menu-item {
         cursor: pointer;
-        width: 50px;
-        height: 50px;
+        width: $dashboard-height;
+        height: $dashboard-height;
         background-color: #252525;
         display: flex;
         justify-content: center;
@@ -44,22 +31,33 @@
         }
 
         &:not(:last-child) {
-            border-right: 1px solid #2a2a2a;
+            border-right: 1px solid $color-grey-dark;
         }
 
         & img {
-            width: 25px;
-            height: 25px;
+            width: $dashboard-height * 0.5;
+            height: $dashboard-height * 0.5;
+        }
+    }
+
+    &__tab {
+        width: 100%;
+        display: flex;
+        flex-direction: column;
+        flex-grow: 1;
+
+        &:first-child {
+            border-top: 3px solid $color-primary;
         }
     }
 
     &__field {
         display: flex;
         flex-direction: column;
-        padding: 0.5rem 1rem;
+        padding: 0.5rem 0.7rem;
         background-color: #ddd;
         text-align: center;
-        border-bottom: 1px solid #2a2a2a;
+        border-bottom: 1px solid $color-grey-dark;
 
         &--light {
             flex-direction: row;
@@ -67,18 +65,18 @@
             justify-content: space-between;
 
             &:nth-child(2n + 1) {
-                border-bottom: 1px solid #c5c5c5;
+                border-bottom: 1px solid $color-grey-light;
             }
 
             & p {
                 width: 100%;
 
                 &:not(:last-child) {
-                    border-right: 1px solid #c5c5c5;
+                    border-right: 1px solid $color-grey-light;
                 }
 
                 &:last-child {
-                    width: 200%;
+                    width: 175%;
                 }
             }
         }

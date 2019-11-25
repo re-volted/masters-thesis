@@ -1,8 +1,10 @@
-@import "components/controller";
-@import "components/loading";
-@import "components/visualization";
-
 @import "global";
 @import "utils";
 @import "transitions";
 @import "typography";
+@import "variables";
+
+@import "components/controller";
+@import "components/home";
+@import "components/loading";
+@import "components/visualization";

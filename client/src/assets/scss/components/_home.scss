@@ -1,0 +1,30 @@
+.home {
+    display: flex;
+}
+
+.dashboard {
+    position: relative;
+    width: 100%;
+    height: calc(100vh - $dashboard-height);
+    background-color: #2a2a2a;
+    overflow: hidden;
+
+    &__header {
+        display: flex;
+        justify-content: space-between;
+        height: $dashboard-height;
+        padding: 0 $dashboard-height * 0.4;
+
+        & p {
+            color: #fff;
+            font-size: 1.3rem;
+            line-height: $dashboard-height;
+        }
+    }
+
+    &__time {
+        display: flex;
+        justify-content: space-between;
+        width: 200px;
+    }
+}
