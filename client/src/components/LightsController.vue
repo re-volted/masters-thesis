@@ -12,6 +12,7 @@
             </div>
         </div>
         <transition name="fade" mode="out-in">
+            <!-- SETTINGS TAB -->
             <div
                 v-if="tabs.settings"
                 class="controller__column controller__tab"
@@ -56,6 +57,23 @@
                         >
                     </div>
                 </div>
+                <div class="controller__field">
+                    <p class="title">
+                        Sterowanie automatyczne:
+                    </p>
+                    <div class="choices">
+                        <span
+                            class="choice"
+                            :class="{
+                                'choice--active': autoAdjustLights
+                            }"
+                            style="font-size: 1.1rem;"
+                            @click="toggleAutoAdjust"
+                            >{{ autoAdjustLights ? "ON" : "OFF" }}</span
+                        >
+                    </div>
+                </div>
+
                 <div
                     class="controller__field btn btn--primary"
                     @click="updateVisualization"
@@ -67,6 +85,7 @@
                     Bartosz Kowalczyk
                 </div>
             </div>
+            <!-- LIGHTS TAB -->
             <div
                 v-else-if="tabs.lights"
                 key="lights"
@@ -117,6 +136,9 @@ export default {
         direction() {
             return this.$store.state.direction;
         },
+        autoAdjustLights() {
+            return this.$store.state.autoAdjustLights;
+        },
         lights() {
             return this.$store.state.lights;
         },
@@ -134,6 +156,9 @@ export default {
         },
         toggleDir(dir) {
             this.$store.dispatch("toggleDir", dir);
+        },
+        toggleAutoAdjust() {
+            this.$store.dispatch("toggleAutoAdjust");
         },
         resolveSrcPath(tab) {
             return require(`@/assets/img/svg/${tab}.svg`);

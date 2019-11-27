@@ -16,6 +16,7 @@ export default new Vuex.Store({
         lightLevel: 0,
         sunLevel: 1,
         pos: 1,
+        autoAdjustLights: true,
         direction: ["D"]
     },
     mutations: {
@@ -35,6 +36,9 @@ export default new Vuex.Store({
             dirIndex === -1
                 ? state.direction.push(dir)
                 : state.direction.splice(dirIndex, 1);
+        },
+        toggleAutoAdjust(state) {
+            state.autoAdjustLights = !state.autoAdjustLights;
         },
         updateVisualization(state) {
             const lightsValues = updateLightsValues(state.lightLevel);
@@ -56,6 +60,10 @@ export default new Vuex.Store({
         },
         toggleDir(context, dir) {
             context.commit("toggleDir", dir);
+            context.commit("updateVisualization");
+        },
+        toggleAutoAdjust(context) {
+            context.commit("toggleAutoAdjust");
             context.commit("updateVisualization");
         },
         updateVisualization(context) {

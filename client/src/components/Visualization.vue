@@ -3,9 +3,7 @@
         class="visualization"
         :style="{
             backgroundImage:
-                'url(' +
-                require(`@/assets/renders/s0/poz${pos}/blank.jpg`) +
-                ')'
+                'url(' + require(`@/assets/renders/poz${pos}/sun0.jpg`) + ')'
         }"
     >
         <div
@@ -13,9 +11,9 @@
             :style="{
                 backgroundImage:
                     'url(' +
-                    require(`@/assets/renders/s1/poz${pos}/blank.jpg`) +
+                    require(`@/assets/renders/poz${pos}/sun${sunValue}.jpg`) +
                     ')',
-                opacity: sunValue
+                opacity: lightLevel / 700
             }"
         />
         <div
@@ -42,10 +40,11 @@ export default {
         lights() {
             return this.$store.state.lights;
         },
+        lightLevel() {
+            return this.$store.state.lightLevel;
+        },
         sunValue() {
-            return this.$store.state.lightLevel > 700
-                ? 1
-                : this.$store.state.lightLevel / 700;
+            return this.lightLevel < 700 ? 1 : 2;
         },
         pos() {
             return this.$store.state.pos;
@@ -53,7 +52,7 @@ export default {
     },
     methods: {
         buildPath(light) {
-            return require(`@/assets/renders/s0/poz${this.pos}/${light.index}${light.type}.jpg`);
+            return require(`@/assets/renders/poz${this.pos}/${light.index}${light.type}.jpg`);
         }
     }
 };
