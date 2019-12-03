@@ -117,8 +117,9 @@
                         type="number"
                         :name="`light-${light.index}${light.type}`"
                         :id="`${light.index}${light.type}`"
-                        v-model="light.value"
+                        v-model.lazy="light.value"
                         @focus="light.auto = false"
+                        @change="updateVisualization"
                     /><span>%</span>
                 </div>
             </div>

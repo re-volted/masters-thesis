@@ -32,7 +32,15 @@ io.on("connect", socket => {
 
     parser.on("data", data => {
         console.log("Data from Arduino:", data);
-        socket.emit("light", data);
+        if (data[0] === "{") socket.emit("light", data);
+    });
+
+    socket.on("updateRealLights", lightsValues => {
+        portArduino.write(lightsValues.join("-"), err => {
+            if (err) {
+                return console.log("Error on write: ", err.message);
+            }
+        });
     });
 
     socket.on("disconnect", () => {

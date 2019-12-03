@@ -50,6 +50,8 @@ export default new Vuex.Store({
             for (let i = 0; i < lightsValues.length; i++) {
                 state.lights[i].value = lightsValues[i];
             }
+
+            this._vm.$socket.client.emit("updateRealLights", lightsValues);
         }
     },
     actions: {

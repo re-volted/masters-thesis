@@ -33,6 +33,11 @@ export default {
         this.$store.dispatch("showLoading", 1000);
         this.clockInterval();
     },
+    computed: {
+        lights() {
+            return this.$store.state.lights;
+        }
+    },
     beforeDestroy() {
         clearInterval(this.currentTime.interval);
     },
@@ -53,7 +58,8 @@ export default {
     sockets: {
         light(data) {
             this.$store.dispatch("updateLightLevel", data);
-            this.$store.dispatch("updateVisualization");
+            if (this.lights.some(el => el.auto === true))
+                this.$store.dispatch("updateVisualization");
         }
     }
 };
