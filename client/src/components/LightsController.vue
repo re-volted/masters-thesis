@@ -63,13 +63,17 @@
                     </p>
                     <div class="choices">
                         <span
+                            v-for="choice in config.autoAdjustLights"
+                            :key="choice"
                             class="choice"
                             :class="{
-                                'choice--active': autoAdjustLights
+                                'choice--active':
+                                    (choice && areAllAuto) ||
+                                    (!choice && noneIsAuto)
                             }"
                             style="font-size: 1.1rem;"
-                            @click="toggleAutoAdjust"
-                            >{{ autoAdjustLights ? "ON" : "OFF" }}</span
+                            @click="switchAutoAdjust(choice)"
+                            >{{ choice ? "ON" : "OFF" }}</span
                         >
                     </div>
                 </div>
@@ -109,7 +113,13 @@
                 >
                     <p>{{ light.type === "D" ? light.index : "" }}</p>
                     <p>{{ light.type }}</p>
-                    <p>{{ light.value * 100 }}%</p>
+                    <input
+                        type="number"
+                        :name="`light-${light.index}${light.type}`"
+                        :id="`${light.index}${light.type}`"
+                        v-model="light.value"
+                        @focus="light.auto = false"
+                    /><span>%</span>
                 </div>
             </div>
         </transition>
@@ -136,14 +146,17 @@ export default {
         direction() {
             return this.$store.state.direction;
         },
-        autoAdjustLights() {
-            return this.$store.state.autoAdjustLights;
-        },
         lights() {
             return this.$store.state.lights;
         },
         lightLevel() {
             return this.$store.state.lightLevel;
+        },
+        areAllAuto() {
+            return this.lights.every(el => el.auto === true);
+        },
+        noneIsAuto() {
+            return this.lights.every(el => el.auto === false);
         }
     },
     methods: {
@@ -157,8 +170,8 @@ export default {
         toggleDir(dir) {
             this.$store.dispatch("toggleDir", dir);
         },
-        toggleAutoAdjust() {
-            this.$store.dispatch("toggleAutoAdjust");
+        switchAutoAdjust(value) {
+            this.$store.dispatch("switchAutoAdjust", value);
         },
         resolveSrcPath(tab) {
             return require(`@/assets/img/svg/${tab}.svg`);

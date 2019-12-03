@@ -22,7 +22,7 @@
             :key="index"
             :style="{
                 backgroundImage: `url(${buildPath(light)})`,
-                opacity: light.value
+                opacity: light.value / 100
             }"
         />
         <Loading />

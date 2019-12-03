@@ -4,8 +4,7 @@
 
 .dashboard {
     position: relative;
-    width: 100%;
-    height: calc(100vh - $dashboard-height);
+    width: calc(100vw - 4 *#{$dashboard-header-height});
     background-color: $color-grey-dark;
     overflow: hidden;
 
@@ -13,14 +12,14 @@
         position: relative;
         display: flex;
         justify-content: space-between;
-        height: $dashboard-height;
-        padding: 0 $dashboard-height * 0.4;
+        height: $dashboard-header-height;
+        padding: 0 $dashboard-header-height * 0.4;
 
         & p {
             z-index: 1000;
             color: #fff;
             font-size: 1.3rem;
-            line-height: $dashboard-height;
+            line-height: $dashboard-header-height;
         }
 
         &::before {

@@ -10,13 +10,13 @@ export default new Vuex.Store({
         config: {
             cameraPositions: [1, 2],
             lightsNum: 8,
-            lightsTypes: ["D", "G"]
+            lightsTypes: ["D", "G"],
+            autoAdjustLights: [true, false]
         },
         lights: [],
         lightLevel: 0,
         sunLevel: 1,
         pos: 1,
-        autoAdjustLights: true,
         direction: ["D"]
     },
     mutations: {
@@ -37,11 +37,16 @@ export default new Vuex.Store({
                 ? state.direction.push(dir)
                 : state.direction.splice(dirIndex, 1);
         },
-        toggleAutoAdjust(state) {
-            state.autoAdjustLights = !state.autoAdjustLights;
+        switchAutoAdjust(state, value) {
+            if (value) {
+                state.lights.forEach(light => (light.auto = true));
+            } else {
+                state.lights.forEach(light => (light.auto = false));
+            }
         },
         updateVisualization(state) {
             const lightsValues = updateLightsValues(state.lightLevel);
+
             for (let i = 0; i < lightsValues.length; i++) {
                 state.lights[i].value = lightsValues[i];
             }
@@ -62,8 +67,8 @@ export default new Vuex.Store({
             context.commit("toggleDir", dir);
             context.commit("updateVisualization");
         },
-        toggleAutoAdjust(context) {
-            context.commit("toggleAutoAdjust");
+        switchAutoAdjust(context, value) {
+            context.commit("switchAutoAdjust", value);
             context.commit("updateVisualization");
         },
         updateVisualization(context) {

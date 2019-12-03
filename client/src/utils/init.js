@@ -13,7 +13,7 @@ export function initFillLights() {
             light.index = num;
             light.type = config.lightsTypes[typeIndex];
             light.value = 0;
-            light.state = false;
+            light.auto = true;
             light.row = num % 4 ? num % 4 : 4;
 
             store.dispatch("addLightToList", light);

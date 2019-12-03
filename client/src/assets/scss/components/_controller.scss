@@ -1,6 +1,6 @@
 .controller {
     position: relative;
-    width: 15%;
+    width: calc(4 * #{$dashboard-header-height});
     height: 100vh;
     display: flex;
     flex-direction: column;
@@ -30,8 +30,8 @@
 
     &__menu-item {
         cursor: pointer;
-        width: $dashboard-height;
-        height: $dashboard-height;
+        width: $dashboard-header-height;
+        height: $dashboard-header-height;
         background-color: #252525;
         display: flex;
         justify-content: center;
@@ -51,8 +51,8 @@
         }
 
         & img {
-            width: $dashboard-height * 0.5;
-            height: $dashboard-height * 0.5;
+            width: $dashboard-header-height * 0.5;
+            height: $dashboard-header-height * 0.5;
         }
     }
 
@@ -90,10 +90,21 @@
                 &:not(:last-child) {
                     border-right: 1px solid $color-grey-light;
                 }
+            }
 
-                &:last-child {
-                    width: 175%;
-                }
+            & input {
+                display: block;
+                border: none;
+                width: 80%;
+                margin: 0 auto;
+                background-color: transparent;
+                text-align: center;
+            }
+
+            & input[type="number"]::-webkit-inner-spin-button,
+            & input[type="number"]::-webkit-outer-spin-button {
+                -webkit-appearance: none;
+                margin: 0;
             }
         }
     }
