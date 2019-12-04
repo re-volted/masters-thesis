@@ -11,7 +11,7 @@ export default {
             return require(`@/assets/img/svg/loading.svg`);
         },
         loading() {
-            return this.$store.state.interfaceModule.loading;
+            return this.$store.state.dashboard.loading;
         }
     }
 };

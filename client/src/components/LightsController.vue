@@ -65,13 +65,12 @@
                         <span
                             v-for="choice in config.autoAdjustLights"
                             :key="choice"
-                            class="choice"
+                            class="choice choice--md"
                             :class="{
                                 'choice--active':
                                     (choice && areAllAuto) ||
                                     (!choice && noneIsAuto)
                             }"
-                            style="font-size: 1.1rem;"
                             @click="switchAutoAdjust(choice)"
                             >{{ choice ? "ON" : "OFF" }}</span
                         >
@@ -123,6 +122,30 @@
                     /><span>%</span>
                 </div>
             </div>
+            <!-- SCENARIOS TAB -->
+            <div
+                v-else-if="tabs.scenarios"
+                key="scenarios"
+                class="controller__column controller__tab customYscroll"
+            >
+                <div class="controller__field">
+                    Dostępne scenariusze:
+                </div>
+                <div
+                    v-for="(scenario, index) in scenarios"
+                    :key="index"
+                    class="controller__field"
+                >
+                    <p class="title">{{ scenario.title }}</p>
+                    <div class="choices">
+                        <span
+                            class="choice choice--wider choice--sm"
+                            @click="chooseScenario(scenario.values)"
+                            >WŁĄCZ</span
+                        >
+                    </div>
+                </div>
+            </div>
         </transition>
     </div>
 </template>
@@ -133,7 +156,8 @@ export default {
         return {
             tabs: {
                 settings: true,
-                lights: false
+                lights: false,
+                scenarios: false
             }
         };
     },
@@ -149,6 +173,9 @@ export default {
         },
         lights() {
             return this.$store.state.lights;
+        },
+        scenarios() {
+            return this.$store.state.scenarios;
         },
         lightLevel() {
             return this.$store.state.lightLevel;
@@ -178,8 +205,12 @@ export default {
             return require(`@/assets/img/svg/${tab}.svg`);
         },
         updateVisualization() {
-            this.$store.dispatch("showLoading", 500);
+            this.$store.dispatch("dashboard/showLoading", 500);
             this.$store.dispatch("updateVisualization");
+        },
+        chooseScenario(values) {
+            this.$store.dispatch("dashboard/showLoading", 1500);
+            this.$store.dispatch("chooseScenario", values);
         }
     }
 };
@@ -219,6 +250,18 @@ export default {
 
     &--active {
         background-color: rgba(100, 100, 100, 0.5);
+    }
+
+    &--wider {
+        width: 60px;
+    }
+
+    &--md {
+        font-size: 1.1rem;
+    }
+
+    &--sm {
+        font-size: 0.8rem;
     }
 
     &:hover {

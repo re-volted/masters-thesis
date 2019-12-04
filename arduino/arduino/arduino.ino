@@ -49,8 +49,10 @@ void loop() {
     
     for (int i = 0; i<lightsNum; i++) {
       lightsLevels[i] = getValue(lightsLevelsData, lightsLevelsDataSeparator, i).toInt();
-      Serial.println(lightsLevels[i]);
+      Serial.print(lightsLevels[i]);
+      Serial.print(", ");
     }
+    Serial.println();
   }
   
   float lux = lightMeter.readLightLevel();

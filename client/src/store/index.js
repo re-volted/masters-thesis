@@ -1,6 +1,6 @@
 import Vue from "vue";
 import Vuex from "vuex";
-import interfaceModule from "./interface";
+import dashboard from "./dashboard";
 import { updateLightsValues } from "../utils/lights";
 
 Vue.use(Vuex);
@@ -13,11 +13,56 @@ export default new Vuex.Store({
             lightsTypes: ["D", "G"],
             autoAdjustLights: [true, false]
         },
-        lights: [],
-        lightLevel: 0,
         sunLevel: 1,
         pos: 1,
-        direction: ["D"]
+        direction: ["D"],
+        lights: [],
+        lightLevel: 0,
+        currentScenario: -1,
+        scenarios: [
+            {
+                title: "Sala konferencyjna",
+                values: [
+                    0,
+                    100,
+                    0,
+                    50,
+                    0,
+                    50,
+                    0,
+                    100,
+                    0,
+                    100,
+                    0,
+                    50,
+                    0,
+                    50,
+                    0,
+                    100
+                ]
+            },
+            {
+                title: "Zajęcia na środku sali",
+                values: [
+                    50,
+                    0,
+                    100,
+                    0,
+                    100,
+                    0,
+                    50,
+                    0,
+                    50,
+                    0,
+                    100,
+                    0,
+                    100,
+                    0,
+                    50,
+                    0
+                ]
+            }
+        ]
     },
     mutations: {
         updateLightLevel(state, data) {
@@ -40,11 +85,23 @@ export default new Vuex.Store({
         switchAutoAdjust(state, value) {
             if (value) {
                 state.lights.forEach(light => (light.auto = true));
+                console.log("switched on auto");
             } else {
                 state.lights.forEach(light => (light.auto = false));
+                console.log("switched off auto");
             }
         },
+        chooseScenario(state, values) {
+            state.lights.forEach((light, index) => {
+                light.value = values[index];
+            });
+
+            setTimeout(() => {
+                this._vm.$socket.client.emit("updateRealLights", values);
+            }, 1100);
+        },
         updateVisualization(state) {
+            console.log("updated");
             const lightsValues = updateLightsValues(state.lightLevel);
 
             for (let i = 0; i < lightsValues.length; i++) {
@@ -55,27 +112,31 @@ export default new Vuex.Store({
         }
     },
     actions: {
-        updateLightLevel(context, data) {
-            context.commit("updateLightLevel", data);
+        updateLightLevel({ commit }, data) {
+            commit("updateLightLevel", data);
         },
-        addLightToList(context, light) {
-            context.commit("addLightToList", light);
+        addLightToList({ commit }, light) {
+            commit("addLightToList", light);
         },
-        switchPos(context, pos) {
-            context.commit("showLoading", 500);
-            context.commit("switchPos", pos);
+        switchPos({ commit }, pos) {
+            commit("showLoading", 500);
+            commit("switchPos", pos);
         },
-        toggleDir(context, dir) {
-            context.commit("toggleDir", dir);
-            context.commit("updateVisualization");
+        toggleDir({ commit }, dir) {
+            commit("toggleDir", dir);
+            commit("updateVisualization");
         },
-        switchAutoAdjust(context, value) {
-            context.commit("switchAutoAdjust", value);
-            context.commit("updateVisualization");
+        switchAutoAdjust({ commit }, value) {
+            commit("switchAutoAdjust", value);
+            commit("updateVisualization");
         },
-        updateVisualization(context) {
-            context.commit("updateVisualization");
+        chooseScenario({ commit }, values) {
+            commit("switchAutoAdjust", false);
+            commit("chooseScenario", values);
+        },
+        updateVisualization({ commit }) {
+            commit("updateVisualization");
         }
     },
-    modules: { interfaceModule }
+    modules: { dashboard }
 });

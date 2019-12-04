@@ -1,19 +1,19 @@
 export default {
-    namespaced: false,
+    namespaced: true,
     state: {
         loading: false
     },
     mutations: {
-        showLoading(state, time) {
+        showLoading(state, duration) {
             state.loading = true;
             setTimeout(() => {
                 state.loading = false;
-            }, time);
+            }, duration);
         }
     },
     actions: {
-        showLoading(context, time) {
-            context.commit("showLoading", time);
+        showLoading({ commit }, duration) {
+            commit("showLoading", duration);
         }
     }
 };

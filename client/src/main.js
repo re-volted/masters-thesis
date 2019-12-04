@@ -3,18 +3,14 @@ import App from "./App.vue";
 import router from "./router";
 import store from "./store";
 import VueSocketIOExt from "vue-socket.io-extended";
-import io from "socket.io-client";
+import $socket from "./utils/socketServer";
 
 Vue.config.productionTip = false;
 
 // Loading styles
 require("./assets/scss/main.scss");
 
-const socket = io(
-    `http://localhost:${process.env.VUE_APP_SOCKET_PORT || 3000}`
-);
-
-Vue.use(VueSocketIOExt, socket, {
+Vue.use(VueSocketIOExt, $socket, {
     store,
     format: "json",
     reconnection: true, // (Boolean) whether to reconnect automatically

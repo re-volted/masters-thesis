@@ -1,4 +1,5 @@
 import store from "../store";
+import $socket from "./socketServer";
 
 function evalLightLevel(level, light) {
     const direction = store.state.direction;
@@ -15,6 +16,8 @@ export function updateLightsValues(lightLevel) {
     const lights = [...store.state.lights];
 
     return lights.map(light =>
-        light.auto ? evalLightLevel(lightLevel, light) : light.value
+        light.auto && $socket.connected
+            ? evalLightLevel(lightLevel, light)
+            : light.value
     );
 }

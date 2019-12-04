@@ -12,7 +12,7 @@
         position: relative;
         display: flex;
         justify-content: space-between;
-        height: $dashboard-header-height;
+        height: calc(#{$dashboard-header-height} + 1px);
         padding: 0 $dashboard-header-height * 0.4;
 
         & p {

@@ -30,7 +30,7 @@ export default {
         };
     },
     mounted() {
-        this.$store.dispatch("showLoading", 1000);
+        this.$store.dispatch("dashboard/showLoading", 1000);
         this.clockInterval();
     },
     computed: {
