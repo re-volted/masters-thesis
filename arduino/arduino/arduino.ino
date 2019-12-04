@@ -49,7 +49,7 @@ void loop() {
     
     for (int i = 0; i<lightsNum; i++) {
       lightsLevels[i] = getValue(lightsLevelsData, lightsLevelsDataSeparator, i).toInt();
-      //Serial.println(lightsLevels[i]); //sending just to check if data exchange works when it should
+      Serial.println(lightsLevels[i]);
     }
   }
   
@@ -58,5 +58,5 @@ void loop() {
   Serial.print(lux);
   Serial.print(F("}"));
   Serial.println("");
-  delay(loop_delay);
+  delay(1000);
 }
