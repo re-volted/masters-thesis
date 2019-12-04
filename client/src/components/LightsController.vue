@@ -116,9 +116,8 @@
                         type="number"
                         :name="`light-${light.index}${light.type}`"
                         :id="`${light.index}${light.type}`"
-                        v-model.lazy="light.value"
-                        @focus="light.auto = false"
-                        @change="updateVisualization"
+                        v-model.number.lazy="light.value"
+                        @change="manualSetLight(index)"
                     /><span>%</span>
                 </div>
             </div>
@@ -201,6 +200,19 @@ export default {
         switchAutoAdjust(value) {
             this.$store.dispatch("switchAutoAdjust", value);
         },
+        manualSetLight(index) {
+            const light = this.lights[index];
+
+            light.auto = false;
+
+            if (light.value < 0) {
+                light.value = 0;
+            } else if (light.value > 100) {
+                light.value = 100;
+            }
+
+            this.updateVisualization();
+        },
         resolveSrcPath(tab) {
             return require(`@/assets/img/svg/${tab}.svg`);
         },
@@ -209,7 +221,7 @@ export default {
             this.$store.dispatch("updateVisualization");
         },
         chooseScenario(values) {
-            this.$store.dispatch("dashboard/showLoading", 1500);
+            this.$store.dispatch("dashboard/showLoading", 2000);
             this.$store.dispatch("chooseScenario", values);
         }
     }

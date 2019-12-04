@@ -21,3 +21,17 @@ export function updateLightsValues(lightLevel) {
             : light.value
     );
 }
+
+export function mapLightsLevels(values, newMax = 255, oldMax = 100) {
+    return values.map(value => {
+        let val = value;
+
+        if (val < 0) {
+            val = 0;
+        } else if (val > 100) {
+            val = 100;
+        }
+
+        return Math.ceil((val * newMax) / oldMax);
+    });
+}

@@ -1,7 +1,7 @@
 import Vue from "vue";
 import Vuex from "vuex";
 import dashboard from "./dashboard";
-import { updateLightsValues } from "../utils/lights";
+import { updateLightsValues, mapLightsLevels } from "../utils/lights";
 
 Vue.use(Vuex);
 
@@ -85,10 +85,8 @@ export default new Vuex.Store({
         switchAutoAdjust(state, value) {
             if (value) {
                 state.lights.forEach(light => (light.auto = true));
-                console.log("switched on auto");
             } else {
                 state.lights.forEach(light => (light.auto = false));
-                console.log("switched off auto");
             }
         },
         chooseScenario(state, values) {
@@ -97,18 +95,29 @@ export default new Vuex.Store({
             });
 
             setTimeout(() => {
-                this._vm.$socket.client.emit("updateRealLights", values);
-            }, 1100);
+                this._vm.$socket.client.emit(
+                    "updateRealLights",
+                    mapLightsLevels(values)
+                );
+            }, 2000);
+        },
+        manualSetLight(state, index, value) {
+            const light = state.lights[index];
+
+            light.auto = false;
+            light.value = value > 100 ? 100 : value;
         },
         updateVisualization(state) {
-            console.log("updated");
             const lightsValues = updateLightsValues(state.lightLevel);
 
             for (let i = 0; i < lightsValues.length; i++) {
                 state.lights[i].value = lightsValues[i];
             }
 
-            this._vm.$socket.client.emit("updateRealLights", lightsValues);
+            this._vm.$socket.client.emit(
+                "updateRealLights",
+                mapLightsLevels(lightsValues)
+            );
         }
     },
     actions: {
@@ -133,6 +142,10 @@ export default new Vuex.Store({
         chooseScenario({ commit }, values) {
             commit("switchAutoAdjust", false);
             commit("chooseScenario", values);
+        },
+        manualSetLight({ commit }, index, value) {
+            commit("manualSetLight", index, value);
+            commit("updateVisualization");
         },
         updateVisualization({ commit }) {
             commit("updateVisualization");
