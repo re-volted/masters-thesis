@@ -1,21 +1,15 @@
 #include <Wire.h>
 #include <BH1750.h>
-#include <Conceptinetics.h>
+#include <DmxSimple.h>
 
 // light meter related part
 BH1750 lightMeter;
 
 // DMX Shield related part
-#define DMX_MASTER_CHANNELS 80
-#define DMX_COMMUNICATION_PIN 2
-
-const int begin_channel = 1;
-const int end_channel = 100;
-const int byte_value = 0;
+#define DMX_MAX_CHANNELS 25
+#define DMX_COMMUNICATION_PIN 3
 
 uint16_t DMXlightsChannels[16] = {1, 2, 4, 5, 7, 8, 10, 13, 16, 20, 21, 22, 23, 24, 25};
-
-DMX_Master dmx_master ( DMX_MASTER_CHANNELS, DMX_COMMUNICATION_PIN );
 
 // SETTINGS
 //initialize configuration constants
@@ -55,8 +49,8 @@ void setup() {
   // Initialize BH1750 meter
   lightMeter.begin();
   // Initialize DMX communication controller
-  dmx_master.enable();
-  dmx_master.setChannelRange ( begin_channel, end_channel, byte_value );
+  DmxSimple.usePin(DMX_COMMUNICATION_PIN);
+  DmxSimple.maxChannel(DMX_MAX_CHANNELS);
 }
 
 void loop() {
@@ -67,14 +61,15 @@ void loop() {
   Serial.println("");
   delay(loop_delay);
 
-  while (Serial.available() > 0) {
+  while(Serial.available() > 0) {
     lightsLevelsData = Serial.readString();
     
     for (int i = 0; i<lightsNum; i++) {
       lightsLevels[i] = getValue(lightsLevelsData, lightsLevelsDataSeparator, i).toInt();
       Serial.print(lightsLevels[i]);
       Serial.print(", ");
-      dmx_master.setChannelValue ( DMXlightsChannels[i], lightsLevels[i] );
+
+      DmxSimple.write(DMXlightsChannels[i], lightsLevels[i]);
     }
     Serial.println();
   }
