@@ -66,7 +66,7 @@ export default new Vuex.Store({
     },
     mutations: {
         updateLightLevel(state, data) {
-            const dataParsed = JSON.parse(data);
+            const dataParsed = JSON.parse(data.split("}")[0] + "}");
             state.lightLevel = dataParsed.light;
         },
         addLightToList(state, light) {

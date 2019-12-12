@@ -1,7 +1,8 @@
 const http = require("http");
 const express = require("express");
-// const bodyParser = require('body-parser');
-const cors = require("cors");
+
+const BTSerialPort = require("bluetooth-serial-port");
+const btSerial = new BTSerialPort.BluetoothSerialPort();
 
 const app = express();
 const server = http.createServer(app);
@@ -9,43 +10,78 @@ const server = http.createServer(app);
 const port = process.env.PORT || 5000;
 
 const io = require("socket.io")(server);
-const SerialPort = require("serialport");
-const Readline = require("@serialport/parser-readline");
-const portArduino = new SerialPort("COM3", {
-    baudRate: 9600
-});
 
-// Initializing of Arduino serialport data parser
-const parser = new Readline();
-portArduino.pipe(parser);
-
-// Middleware
-// app.use(bodyParser.json());
-app.use(cors());
-
-parser.on("open", () =>
-    console.log("Serial port for communication with Arduino opened.")
-);
+//Generic Error Handler for the BT Serial Port library as requires error functions
+const errFunction = err => {
+    if (err) {
+        console.log("Error", err);
+    }
+};
 
 io.on("connect", socket => {
     console.log("Socket connection with Vue application established.");
+    // Once BtSerial.inquire finds a device it will call this code
+    // BtSerial.inquire will find all devices currently connected with your computer
+    btSerial.on("found", function(address, name) {
+        // If a device is found and the name contains 'HC' we will continue
+        // This is so that it doesn't try to send data to all your other connected BT devices
+        if (name.toLowerCase().includes("hc")) {
+            btSerial.findSerialPortChannel(
+                address,
+                function(channel) {
+                    console.log("Connected to:", name);
 
-    parser.on("data", data => {
-        console.log("Data from Arduino:", data);
-        if (data[0] === "{") socket.emit("light", data);
-    });
+                    // Finds then serial port channel and then connects to it
+                    btSerial.connect(
+                        address,
+                        channel,
+                        function() {
+                            // initializing empty data buffer
+                            let data = "";
 
-    socket.on("updateRealLights", lightsValues => {
-        portArduino.write(lightsValues.join("-"), err => {
-            if (err) {
-                return console.log("Error on write: ", err.message);
-            }
+                            btSerial.on("data", chunk => {
+                                data += chunk.toString();
+
+                                // if sent all the chunks related to lightLevelUpdate
+                                if (data.indexOf("}") !== -1) {
+                                    console.log(data);
+                                    socket.emit("light", data);
+                                    data = "";
+                                }
+
+                                // TO DELETE AFTER ENSURING THAT DMX WORKS WELL ---------
+                                // if sent all the chunks related to controlling
+                                if (data.indexOf("$") !== -1) {
+                                    console.log(data);
+                                    data = "";
+                                }
+                                // ------------------------------------------------------
+                            });
+                        },
+                        errFunction
+                    );
+                },
+                errFunction
+            );
+        } else {
+            console.log("Not connecting to: ", name);
+        }
+
+        socket.on("updateRealLights", lightsValues => {
+            btSerial.write(Buffer.from(lightsValues.join("-") + "#"), err => {
+                if (err) {
+                    return console.log("Error on write: ", err.message);
+                }
+            });
+        });
+
+        socket.on("disconnect", () => {
+            console.log("Socket disconnected from Vue application.");
         });
     });
-
-    socket.on("disconnect", () => {
-        console.log("Socket disconnected from Vue application.");
-    });
 });
+
+// Starts looking for Bluetooth devices and calls the function btSerial.on('found'
+btSerial.inquire();
 
 server.listen(port, () => console.log(`Listening on port ${port}...`));

@@ -1,19 +1,17 @@
 {
-  "name": "masters-thesis",
-  "version": "1.0.0",
-  "description": "Fullstack app for Master's Thesis purpose",
-  "main": "index.js",
-  "scripts": {
-    "start": "node server/index.js",
-    "dev": "nodemon server/index.js"
-  },
-  "author": "Bartosz Kowalczyk",
-  "license": "MIT",
-  "dependencies": {
-    "body-parser": "^1.19.0",
-    "cors": "^2.8.5",
-    "express": "^4.17.1",
-    "serialport": "^8.0.5",
-    "socket.io": "^2.3.0"
-  }
+    "name": "masters-thesis",
+    "version": "1.0.0",
+    "description": "Fullstack app for Master's Thesis purpose",
+    "main": "index.js",
+    "scripts": {
+        "start": "node server/index.js",
+        "dev": "nodemon server/index.js"
+    },
+    "author": "Bartosz Kowalczyk",
+    "license": "MIT",
+    "dependencies": {
+        "bluetooth-serial-port": "^2.2.6",
+        "express": "^4.17.1",
+        "socket.io": "^2.3.0"
+    }
 }
