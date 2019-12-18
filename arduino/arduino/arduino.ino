@@ -10,10 +10,10 @@ BH1750 lightMeter;
 SoftwareSerial BTserial(10, 11);
 
 // DMX Shield related part
-#define DMX_MAX_CHANNELS 25
+#define DMX_MAX_CHANNELS 24
 #define DMX_COMMUNICATION_PIN 3
 
-uint16_t DMXlightsChannels[16] = {1, 2, 4, 5, 7, 8, 10, 13, 16, 20, 21, 22, 23, 24, 25};
+uint16_t DMXlightsChannels[16] = {10, 11, 21, 20, 7, 8, 22, 23, 16, 17, 13, 14, 1, 2, 4, 5};
 
 // SETTINGS
 //initialize configuration constants
@@ -77,6 +77,6 @@ void loop() {
     }
     BTserial.print(F("$")); // to delete
   }
-  
+
   delay(loop_delay);
 }

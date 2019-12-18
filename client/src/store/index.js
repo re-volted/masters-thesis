@@ -128,7 +128,7 @@ export default new Vuex.Store({
             commit("addLightToList", light);
         },
         switchPos({ commit }, pos) {
-            commit("showLoading", 500);
+            commit("dashboard/showLoading", 500);
             commit("switchPos", pos);
         },
         toggleDir({ commit }, dir) {
