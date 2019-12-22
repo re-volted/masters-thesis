@@ -22,20 +22,20 @@ io.on("connect", socket => {
     console.log("Socket connection with Vue application established.");
     // Once BtSerial.inquire finds a device it will call this code
     // BtSerial.inquire will find all devices currently connected with your computer
-    btSerial.on("found", function(address, name) {
+    btSerial.on("found", (address, name) => {
         // If a device is found and the name contains 'HC' we will continue
         // This is so that it doesn't try to send data to all your other connected BT devices
         if (name.toLowerCase().includes("hc")) {
             btSerial.findSerialPortChannel(
                 address,
-                function(channel) {
+                channel => {
                     console.log("Connected to:", name);
 
                     // Finds then serial port channel and then connects to it
                     btSerial.connect(
                         address,
                         channel,
-                        function() {
+                        () => {
                             // initializing empty data buffer
                             let data = "";
 
