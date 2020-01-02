@@ -2,7 +2,10 @@
     <div class="home">
         <div class="dashboard">
             <div class="dashboard__header">
-                <p>Dashboard</p>
+                <p>
+                    Wizualizacja sytuacji oświetleniowej sali laboratoryjnej -
+                    kamera {{ pos }}
+                </p>
                 <div class="dashboard__time">
                     <p>{{ currentTime.time }}</p>
                     <p>{{ currentTime.date }}</p>
@@ -36,6 +39,9 @@ export default {
     computed: {
         lights() {
             return this.$store.state.lights;
+        },
+        pos() {
+            return this.$store.state.pos;
         }
     },
     beforeDestroy() {
