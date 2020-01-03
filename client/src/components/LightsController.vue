@@ -110,6 +110,13 @@
                     :key="index"
                     class="controller__field controller__field--light"
                 >
+                    <span
+                        class="auto"
+                        :class="{
+                            'auto--hand':
+                                !light.auto || !direction.includes(light.type)
+                        }"
+                    />
                     <p>{{ light.type === "D" ? light.index : "" }}</p>
                     <p>{{ light.type }}</p>
                     <input

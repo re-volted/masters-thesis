@@ -21,24 +21,28 @@ export default new Vuex.Store({
         currentScenario: -1,
         scenarios: [
             {
+                title: "Oświetlenie wyłączone",
+                values: [0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0]
+            },
+            {
                 title: "Sala konferencyjna",
                 values: [
-                    0,
-                    100,
+                    50,
+                    75,
                     0,
                     50,
                     0,
                     50,
-                    0,
-                    100,
-                    0,
-                    100,
+                    50,
+                    75,
+                    50,
+                    75,
                     0,
                     50,
                     0,
                     50,
-                    0,
-                    100
+                    50,
+                    75
                 ]
             },
             {
@@ -61,10 +65,6 @@ export default new Vuex.Store({
                     50,
                     0
                 ]
-            },
-            {
-                title: "Oświetlenie wyłączone",
-                values: [0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0]
             },
             {
                 title: "Prezentacja multimedialna",
