@@ -65,6 +65,10 @@ export default new Vuex.Store({
             {
                 title: "Oświetlenie wyłączone",
                 values: [0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0]
+            },
+            {
+                title: "Prezentacja multimedialna",
+                values: [0, 35, 0, 35, 0, 35, 0, 35, 0, 35, 0, 35, 0, 35, 0, 35]
             }
         ]
     },
