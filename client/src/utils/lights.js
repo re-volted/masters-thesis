@@ -1,13 +1,39 @@
 import store from "../store";
 import $socket from "./socketServer";
 
+function getControlValue(level, row) {
+    return store.state.controlValues[level][row];
+}
+
 function evalLightLevel(level, light) {
     const direction = store.state.direction;
+    const row = light.row % 4 === 0 ? 4 : light.row % 4;
 
     if (direction.includes(light.type)) {
-        if (level < 170) return 1 * 100; // all lights to max when it's dark in the classroom
-        if (level < 500) return (light.row / 4) * 100; // all lights medium when its quite well lighted
-        return (light.row / 8) * 100;
+        switch (true) {
+            case level > 1000:
+                return getControlValue(1000, row);
+            case level > 900:
+                return getControlValue(900, row);
+            case level > 800:
+                return getControlValue(800, row);
+            case level > 700:
+                return getControlValue(700, row);
+            case level > 600:
+                return getControlValue(600, row);
+            case level > 500:
+                return getControlValue(500, row);
+            case level > 400:
+                return getControlValue(400, row);
+            case level > 300:
+                return getControlValue(300, row);
+            case level > 200:
+                return getControlValue(200, row);
+            case level > 100:
+                return getControlValue(100, row);
+            case level > 0:
+                return getControlValue(0, row);
+        }
     }
     return 0; // if direction disabled, opacity 0
 }
