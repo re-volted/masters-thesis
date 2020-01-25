@@ -64,8 +64,9 @@ export default {
     sockets: {
         light(data) {
             this.$store.dispatch("updateLightLevel", data);
-            if (this.lights.some(el => el.auto === true))
+            if (this.lights.some(el => el.auto === true)) {
                 this.$store.dispatch("updateVisualization");
+            }
         }
     }
 };

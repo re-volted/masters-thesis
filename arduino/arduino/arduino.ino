@@ -17,11 +17,14 @@ uint16_t DMXlightsChannels[16] = {10, 11, 21, 20, 7, 8, 22, 23, 16, 17, 13, 14, 
 
 // SETTINGS
 //initialize configuration constants
-const int loop_delay = 500;
+const int loop_delay = 250;
 
 //initialize array containing real lights' level values
 const int lightsNum = 16;
 uint8_t lightsLevels[lightsNum];
+const int lightMeasurementsNum = 10;
+int lightMeasurementsIter = 0;
+float lightMeasurements[lightMeasurementsNum];
 
 //initialize variable for fetching data from interface
 String lightsLevelsData;
@@ -29,54 +32,63 @@ char lightsLevelsDataSeparator = '-';
 
 //declaration of function parsing data from interface to obtain separate light's level value
 String getValue(String data, char separator, int index) {
-  int found = 0;
-  int strIndex[] = {0, -1};
-  int maxIndex = data.length()-1;
+    int found = 0;
+    int strIndex[] = {0, -1};
+    int maxIndex = data.length()-1;
 
-  for (int i=0; i<=maxIndex && found<=index; i++) {
-    if (data.charAt(i)==separator || i==maxIndex) {
-        found++;
-        strIndex[0] = strIndex[1]+1;
-        strIndex[1] = (i == maxIndex) ? i+1 : i;
+    for (int i=0; i<=maxIndex && found<=index; i++) {
+        if (data.charAt(i)==separator || i==maxIndex) {
+            found++;
+            strIndex[0] = strIndex[1]+1;
+            strIndex[1] = (i == maxIndex) ? i+1 : i;
+        }
     }
-  }
 
-  return found > index ? data.substring(strIndex[0], strIndex[1]) : "";
+    return found > index ? data.substring(strIndex[0], strIndex[1]) : "";
 }
 
 void setup() {
 
-  BTserial.begin(9600); // Bluetooth at baud 9600 for talking to the node server
-//  Serial.begin(4800); // Default Serial on Baud 4800 for printing out some messages in the Serial Monitor
+    BTserial.begin(9600); // Bluetooth at baud 9600 for talking to the node server
 
-  // Initialize the I2C bus (BH1750 library doesn't do this automatically)
-  Wire.begin();
-  // Initialize BH1750 meter
-  lightMeter.begin();
-  // Initialize DMX communication controller
-  DmxSimple.usePin(DMX_COMMUNICATION_PIN);
-  DmxSimple.maxChannel(DMX_MAX_CHANNELS);
+    // Initialize the I2C bus (BH1750 library doesn't do this automatically)
+    Wire.begin();
+    // Initialize BH1750 meter
+    lightMeter.begin();
+    // Initialize DMX communication controller
+    DmxSimple.usePin(DMX_COMMUNICATION_PIN);
+    DmxSimple.maxChannel(DMX_MAX_CHANNELS);
 }
 
 void loop() {
-  float lux = lightMeter.readLightLevel();
-  BTserial.print(F("{\"light\":"));
-  BTserial.print(lux);
-  BTserial.print(F("}"));
-  delay(loop_delay);
 
-  while(BTserial.available() > 0) {
-    lightsLevelsData = BTserial.readStringUntil('#'); // terminate char for "updateRealLights" emit
-    
-    for (int i = 0; i<lightsNum; i++) {
-      lightsLevels[i] = getValue(lightsLevelsData, lightsLevelsDataSeparator, i).toInt();
-      BTserial.print(lightsLevels[i]); // to delete after ensuring that DMX control works well
-      BTserial.print(", "); // to delete
-  
-      DmxSimple.write(DMXlightsChannels[i], lightsLevels[i]);
+    if (lightMeasurementsIter == lightMeasurementsNum) {
+        BTserial.print(F("{\"light\":["));
+
+        for (int j = 0; j<lightMeasurementsNum-1; j++) {
+            BTserial.print(lightMeasurements[j]);
+            BTserial.print(",");
+        }
+        BTserial.print(lightMeasurements[lightMeasurementsNum-1]);
+        BTserial.print(F("]}"));
+        lightMeasurementsIter = 0;
     }
-    BTserial.print(F("$")); // to delete
-  }
 
-  delay(loop_delay);
+    float lux = lightMeter.readLightLevel();
+    lightMeasurements[lightMeasurementsIter] = lux;
+
+    while (BTserial.available() > 0) {
+        lightsLevelsData = BTserial.readStringUntil('#'); // terminate char for "updateRealLights" emit
+        
+        for (int i = 0; i<lightsNum; i++) {
+            lightsLevels[i] = getValue(lightsLevelsData, lightsLevelsDataSeparator, i).toInt();
+            BTserial.print(lightsLevels[i]); // to delete after ensuring that DMX control works well
+            BTserial.print(", "); // to delete
+    
+            DmxSimple.write(DMXlightsChannels[i], lightsLevels[i]);
+        }
+        BTserial.print(F("$")); // to delete
+    }
+    lightMeasurementsIter++;
+    delay(loop_delay);
 }

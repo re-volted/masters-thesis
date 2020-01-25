@@ -142,8 +142,15 @@ export default new Vuex.Store({
     },
     mutations: {
         updateLightLevel(state, data) {
-            const dataParsed = JSON.parse(data.split("}")[0] + "}");
-            state.lightLevel = dataParsed.light;
+            const dataParsed = JSON.parse(data.split("}")[0] + "}").light;
+            // remove 2 lowest and 2 highest measurements and then calculate the average
+            dataParsed.splice(dataParsed.indexOf(Math.min(...dataParsed)), 1);
+            dataParsed.splice(dataParsed.indexOf(Math.min(...dataParsed)), 1);
+            dataParsed.splice(dataParsed.indexOf(Math.max(...dataParsed)), 1);
+            dataParsed.splice(dataParsed.indexOf(Math.max(...dataParsed)), 1);
+            state.lightLevel = (
+                dataParsed.reduce((a, b) => a + b, 0) / dataParsed.length
+            ).toFixed(2);
         },
         addLightToList(state, light) {
             state.lights.push(light);
@@ -175,7 +182,7 @@ export default new Vuex.Store({
                     "updateRealLights",
                     mapLightsLevels(values)
                 );
-            }, 2000);
+            }, 1000);
         },
         manualSetLight(state, index, value) {
             const light = state.lights[index];
