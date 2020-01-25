@@ -22,6 +22,8 @@ const int loop_delay = 250;
 //initialize array containing real lights' level values
 const int lightsNum = 16;
 uint8_t lightsLevels[lightsNum];
+
+// variables for multi measurements support
 const int lightMeasurementsNum = 10;
 int lightMeasurementsIter = 0;
 float lightMeasurements[lightMeasurementsNum];
@@ -62,6 +64,7 @@ void setup() {
 
 void loop() {
 
+    // sending whole set of 10 collected measures
     if (lightMeasurementsIter == lightMeasurementsNum) {
         BTserial.print(F("{\"light\":["));
 
@@ -74,6 +77,7 @@ void loop() {
         lightMeasurementsIter = 0;
     }
 
+    // reading single light level and save it to the array
     float lux = lightMeter.readLightLevel();
     lightMeasurements[lightMeasurementsIter] = lux;
 
@@ -81,13 +85,15 @@ void loop() {
         lightsLevelsData = BTserial.readStringUntil('#'); // terminate char for "updateRealLights" emit
         
         for (int i = 0; i<lightsNum; i++) {
+            // reading separate values from sent stream of data
             lightsLevels[i] = getValue(lightsLevelsData, lightsLevelsDataSeparator, i).toInt();
-            BTserial.print(lightsLevels[i]); // to delete after ensuring that DMX control works well
-            BTserial.print(", "); // to delete
+            BTserial.print(lightsLevels[i]); // transmission debugging in server
+            BTserial.print(", "); // -||-
     
+            // sending data to DMX lights
             DmxSimple.write(DMXlightsChannels[i], lightsLevels[i]);
         }
-        BTserial.print(F("$")); // to delete
+        BTserial.print(F("$")); // terminating char for transmission debugging in server side
     }
     lightMeasurementsIter++;
     delay(loop_delay);
