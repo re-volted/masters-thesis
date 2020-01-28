@@ -1,4 +1,6 @@
 # masters-thesis
 Fullstack Vue+Express app for Master's Thesis purpose
 
-Work currently in progress. Stay tuned.
+Final version of source code on branch edv-bluetooth.
+
+Code for educational purposes mainly. Currently in use of Warsaw University of Technology (faculty of Electrical Engineering).
